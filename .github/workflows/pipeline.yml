@@ -45,6 +45,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
+
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
@@ -117,6 +125,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
@@ -271,6 +287,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
+
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
@@ -338,6 +362,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
+
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
@@ -400,6 +432,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
@@ -498,6 +538,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
