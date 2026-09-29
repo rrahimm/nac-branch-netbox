@@ -1,0 +1,228 @@
+
+meraki:
+  domains:
+    - name: US
+      administrator:
+        name: admin
+      organizations:
+        - name: !env org_name
+          managed: false
+          networks:
+            - name: Unified Branch 1
+              templates:
+                - nw_setup
+                - nw_tags
+                - nw_management
+                - small_branch_inventory
+                - wan_dhcp_dhcp
+                - app_settings
+                - app_spoke
+                - app_ports
+                - app_vlans
+                - app_fw
+                - app_ts
+                - app_content
+                - app_intrusion
+                - app_mal
+                - switch
+                - switch_access_policy
+                - wireless
+                - wireless_radius
+                - group_policies
+              variables:
+                syslog_server: 3.4.5.6
+                syslog_port: 514
+                netflow_server: 4.5.6.7
+                netflow_port: 2055
+                network_tags:
+                  - small_branch
+                  - ubac
+                  - branch1
+                appliance_01_name: Unified Branch Network 1 Appliance
+                access_switch_01_name: Unified Branch Network 1 Switch
+                ap_01_name: Unified Branch Network 1 Access Point
+                appliance_01_serial: !env branch1_mx_serial
+                access_switch_01_serial: !env branch1_ms_serial
+                ap_01_serial: !env branch1_cw_serial
+                lat: 37.41809510000001
+                lng: -122.098531
+                wan1_enabled: true
+                wan2_enabled: true
+                dns_server_1: 8.8.8.8
+                dns_server_2: 8.8.4.4
+                address: Wake Forest, N.C.
+                vlan10_subnet: 10.1.10.0/24
+                vlan10_appliance_ip: 10.1.10.1
+                vlan20_subnet: 10.1.20.0/24
+                vlan20_appliance_ip: 10.1.20.1
+                vlan30_subnet: 10.1.30.0/24
+                vlan30_appliance_ip: 10.1.30.1
+                vlan40_subnet: 10.1.40.0/24
+                vlan40_appliance_ip: 10.1.40.1
+                vlan50_subnet: 10.1.50.0/24
+                vlan50_appliance_ip: 10.1.50.1
+                vlan999_subnet: 10.1.255.0/24
+                vlan999_appliance_ip: 10.1.255.1
+                hubs:
+                  - name: !env vpn_hub_network_name
+                    default_route: true
+                data_wireless_ssid_name: Data
+                data_vlan_group_policy: Employees
+                voice_vlan_group_policy: Voice
+                iot_vlan_group_policy: Iot
+                data_ssid_schedules_enabled: true
+                guest_wireless_ssid_name: Guest
+                guest_wireless_client_bw_down: 0
+                guest_wireless_client_bw_up: 0
+                guest_wireless_ssid_bw_down: 0
+                guest_wireless_ssid_bw_up: 0
+                guest_ssid_schedules_enabled: true
+                guest_ssid_welcome_message: Unauthorized access is prohibited.
+                radius_servers:
+                  - host: 172.16.1.1
+                    port: 1812
+                    secret: !env radius_server_secret
+                  - host: 172.16.1.2
+                    port: 1812
+                    secret: !env radius_server_secret
+                radius_accounting_servers:
+                  - host: 172.16.1.1
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                  - host: 172.16.1.2
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                wireless_radius_servers:
+                  - host: 172.16.1.1
+                    port: 1812
+                    secret: !env radius_server_secret
+                  - host: 172.16.1.2
+                    port: 1812
+                    secret: !env radius_server_secret
+                wireless_radius_accounting_servers:
+                  - host: 172.16.1.1
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                  - host: 172.16.1.2
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                splash_reply_to_email_address: example@example.com
+                switch_mtu_size: 9176
+                time_zone: America/Los_Angeles
+                network_notes: This is a small branch network created via Netascode.
+                wan_limit_down: 0
+                wan_limit_up: 0
+                wan1_limit_down: 400000
+                wan1_limit_up: 400000
+                wan2_limit_down: 500000
+                wan2_limit_up: 50000
+            - name: Unified Branch 2
+              templates:
+                - nw_setup
+                - nw_tags
+                - nw_management
+                - small_branch_inventory
+                - wan_dhcp_dhcp
+                - app_settings
+                - app_spoke
+                - app_ports
+                - app_vlans
+                - app_fw
+                - app_ts
+                - app_content
+                - app_intrusion
+                - app_mal
+                - switch
+                - switch_access_policy
+                - wireless
+                - wireless_radius
+                - group_policies
+              variables:
+                syslog_server: 3.4.5.6
+                syslog_port: 514
+                netflow_server: 4.5.6.7
+                netflow_port: 2055
+                network_tags:
+                  - small_branch
+                  - ubac
+                  - branch2
+                appliance_01_name: Unified Branch Network 2 Appliance
+                access_switch_01_name: Unified Branch Network 2 Switch
+                ap_01_name: Unified Branch Network 2 Access Point
+                appliance_01_serial: !env branch2_mx_serial
+                access_switch_01_serial: !env branch2_ms_serial
+                ap_01_serial: !env branch2_cw_serial
+                lat: 37.41809510000001
+                lng: -122.098531
+                wan1_enabled: true
+                wan2_enabled: true
+                dns_server_1: 8.8.8.8
+                dns_server_2: 8.8.4.4
+                address: Wake Forest, N.C.
+                vlan10_subnet: 10.2.10.0/24
+                vlan10_appliance_ip: 10.2.10.1
+                vlan20_subnet: 10.2.20.0/24
+                vlan20_appliance_ip: 10.2.20.1
+                vlan30_subnet: 10.2.30.0/24
+                vlan30_appliance_ip: 10.2.30.1
+                vlan40_subnet: 10.2.40.0/24
+                vlan40_appliance_ip: 10.2.40.1
+                vlan50_subnet: 10.2.50.0/24
+                vlan50_appliance_ip: 10.2.50.1
+                vlan999_subnet: 10.2.255.0/24
+                vlan999_appliance_ip: 10.2.255.1
+                hubs:
+                  - name: !env vpn_hub_network_name
+                    default_route: true
+                data_wireless_ssid_name: Data
+                data_vlan_group_policy: Employees
+                voice_vlan_group_policy: Voice
+                iot_vlan_group_policy: Iot
+                data_ssid_schedules_enabled: true
+                guest_wireless_ssid_name: Guest
+                guest_wireless_client_bw_down: 0
+                guest_wireless_client_bw_up: 0
+                guest_wireless_ssid_bw_down: 0
+                guest_wireless_ssid_bw_up: 0
+                guest_ssid_schedules_enabled: true
+                guest_ssid_welcome_message: Unauthorized access is prohibited.
+                radius_servers:
+                  - host: 172.16.1.1
+                    port: 1812
+                    secret: !env radius_server_secret
+                  - host: 172.16.1.2
+                    port: 1812
+                    secret: !env radius_server_secret
+                radius_accounting_servers:
+                  - host: 172.16.1.1
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                  - host: 172.16.1.2
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                wireless_radius_servers:
+                  - host: 172.16.1.1
+                    port: 1812
+                    secret: !env radius_server_secret
+                  - host: 172.16.1.2
+                    port: 1812
+                    secret: !env radius_server_secret
+                wireless_radius_accounting_servers:
+                  - host: 172.16.1.1
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                  - host: 172.16.1.2
+                    port: 1813
+                    secret: !env radius_accounting_server_secret
+                splash_reply_to_email_address: example@example.com
+                switch_mtu_size: 9176
+                time_zone: America/Los_Angeles
+                network_notes: This is a small branch network created via Netascode.
+                wan_limit_down: 0
+                wan_limit_up: 0
+                wan1_limit_down: 400000
+                wan1_limit_up: 400000
+                wan2_limit_down: 500000
+                wan2_limit_up: 50000
+            - name: !env vpn_hub_network_name
+              managed: false

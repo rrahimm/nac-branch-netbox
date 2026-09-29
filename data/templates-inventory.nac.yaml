@@ -1,0 +1,100 @@
+meraki:
+  templates:
+    networks:
+       - name: small_branch_inventory
+         type: model
+         configuration:
+          devices:
+            - name: ${appliance_01_name}
+              serial: ${appliance_01_serial}
+              tags:
+                - ubac
+                - UBAC-S
+              lat: ${lat}
+              lng: ${lng}
+              address: ${address}
+              notes: Small Branch Secure Router
+            - name: ${access_switch_01_name}
+              serial: ${access_switch_01_serial}
+              tags:
+                - ubac
+                - UBAC-S
+              lat: ${lat}
+              lng: ${lng}
+              address: ${address}
+              notes: Small Branch Notes Switch 1
+              switch:
+                ports:
+                - port_id_ranges:
+                  - from: 1
+                    to: 2
+                  name: Uplink Trunk Port
+                  enabled: true
+                  type: trunk
+                  tags:
+                    - uplink
+                    - trunk
+                  vlan: 1
+                  allowed_vlans: 1,10,20,30,40,50,999
+                  link_negotiation: Auto negotiate
+                  udld: Alert only
+                  storm_control: true
+                  rstp: true
+                  # peer_sgt_capable: ${sgt_pass}
+                  # adaptive_policy_group_name: Infrastructure
+                - port_id_ranges:
+                  - from: 3
+                    to: 8
+                  name: Reserved for Infrastructure
+                  enabled: false
+                  type: access
+                  tags:
+                    - access
+                  vlan: 1
+                  link_negotiation: Auto negotiate
+                  storm_control: true
+                  rstp: true
+                  stp_guard: bpdu guard
+                - port_id_ranges:
+                  - from: 9
+                    to: 12
+                  name: AP Trunk Port
+                  enabled: true
+                  type: trunk
+                  tags:
+                    - uplink
+                    - trunk
+                  vlan: 999
+                  allowed_vlans: 1,10,20,30,40,50,999
+                  link_negotiation: Auto negotiate
+                  udld: Alert only
+                  storm_control: true
+                  rstp: true
+                  # peer_sgt_capable: ${sgt_pass}
+                  # adaptive_policy_group_name: Infrastructure
+                - port_id_ranges:
+                  - from: 13
+                    to: 24
+                  name: Access Port
+                  enabled: true
+                  type: access
+                  tags:
+                    - access
+                  vlan: 10
+                  voice_vlan: 20
+                  link_negotiation: Auto negotiate
+                  storm_control: true
+                  rstp: true
+                  stp_guard: bpdu guard
+            - name: ${ap_01_name}
+              serial: ${ap_01_serial}
+              tags:
+                - ubac
+                - UBAC-S
+              lat: ${lat}
+              lng: ${lng}
+              address: ${address}
+              notes: Small Branch Notes Access Point 1
+              wireless:
+                radio_settings:
+                  rf_profile_name: Corp wireless rf profile

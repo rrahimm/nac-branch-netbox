@@ -1,0 +1,27 @@
+meraki:
+  templates:
+    networks:      
+      - name: wan_dhcp_dhcp
+        type: model
+        configuration:
+          devices:
+            - serial: ${appliance_01_serial}
+              name: ${appliance_01_name}
+              appliance:
+                uplinks_settings:
+                  wan1:
+                    enabled: ${wan1_enabled}
+                    vlan_tagging:
+                      enabled: false
+                    svis:
+                      ipv4:
+                        assignment_mode: "dynamic"
+                      # ipv6:
+                      #   assignment_mode: "dynamic"
+                  wan2:
+                    enabled: ${wan2_enabled}
+                    vlan_tagging:
+                      enabled: false
+                    svis:
+                      ipv4:
+                        assignment_mode: "dynamic"

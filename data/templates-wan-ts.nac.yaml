@@ -1,0 +1,97 @@
+meraki:
+  templates:
+    networks:
+      - name: app_ts
+        type: model
+        configuration:
+          appliance:
+            traffic_shaping:
+                  global_bandwidth_limits:
+                      limit_up: ${wan_limit_up}
+                      limit_down: ${wan_limit_down}
+                  custom_performance_classes:
+                    - name: SaaS_Traffic
+                      max_latency: 150
+                      max_jitter: 50
+                      max_loss_percentage: 5
+                    - name: Critical_Apps
+                      max_latency: 150
+                      max_jitter: 20
+                      max_loss_percentage: 2
+                  rules:
+                      rules:
+                        - name: Rule 01
+                          definitions:
+                            - type: "localNet"
+                              value: "172.16.99.0/24"
+                          per_client_bandwidth_limits:
+                              settings: "ignore"
+                          dscp_tag_value: 0
+                          priority: high
+                        - name: Rule 02
+                          definitions:
+                            - type: "ipRange"
+                              value: "10.102.1.161/32:443"
+                          per_client_bandwidth_limits:
+                              settings: ignore
+                          dscp_tag_value: 18
+                          priority: high
+                      default_rules: true
+                  uplink_bandwidth_limits:
+                      wan1:
+                          limit_up: ${wan1_limit_up}
+                          limit_down: ${wan1_limit_down}
+                      wan2:
+                          limit_up: ${wan2_limit_up}
+                          limit_down: ${wan2_limit_down}
+                      cellular:
+                          limit_up: 0
+                          limit_down: 0
+                  uplink_selection:
+                      default_uplink: wan1
+                      active_active_auto_vpn: true
+                      load_balancing: false
+                      failover_and_failback_immediate: false
+                      vpn_traffic_uplink_preferences:
+                      - name: policy 1
+                        preferred_uplink: wan2
+                        traffic_filters:
+                          - type: applicationCategory
+                            value:
+                              id: meraki:layer7/category/16
+                        fail_over_criterion: poorPerformance
+                        performance_class:
+                          type: builtin
+                          builtin_performance_class_name: VoIP
+                      - name: policy 2
+                        preferred_uplink: wan2
+                        traffic_filters:
+                          - type: "custom"
+                            value:
+                              protocol: tcp
+                              source:
+                                  port: any
+                                  cidr: any
+                              destination:
+                                  port: 443
+                                  cidr: "10.102.1.161/32"
+                        fail_over_criterion: poorPerformance
+                        performance_class:
+                          type: custom
+                          custom_performance_class_name: Critical_Apps
+                      - name: policy 3
+                        preferred_uplink: wan1
+                        traffic_filters:
+                          - type: "custom"
+                            value:
+                              protocol: any
+                              source:
+                                  port: any
+                                  cidr: any
+                              destination:
+                                  port: any
+                                  cidr: any
+                        fail_over_criterion: poorPerformance
+                        performance_class:
+                          type: custom
+                          custom_performance_class_name: Critical_Apps

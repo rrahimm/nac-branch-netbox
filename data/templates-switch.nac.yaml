@@ -1,0 +1,65 @@
+meraki:
+  templates:
+    networks:
+      - name: switch_access_policy
+        type: file
+        file: data/switch_access_policy.yaml.tftpl
+      - name: switch
+        type: model
+        configuration:
+          switch:
+            settings:
+              vlan: 999
+              use_combined_power: false
+              uplink_client_sampling: true
+              mac_blocklist: false
+            mtu:
+              default_mtu_size: ${switch_mtu_size}
+            routing_multicast:
+              default_settings:
+                igmp_snooping: true
+                flood_unknown_multicast_traffic: false
+            dscp_to_cos_mappings:
+              - cos: 0
+                dscp: 0
+                title: default
+              - cos: 0
+                dscp: 10
+                title: AF11
+              - cos: 1
+                dscp: 18
+                title: AF21
+              - cos: 2
+                dscp: 26
+                title: AF31
+              - cos: 3
+                dscp: 34
+                title: AF41
+              - cos: 3
+                dscp: 46
+                title: EF voice
+            qos_rules:
+              - vlan: 50
+                protocol: ANY
+                dscp: 0
+                qos_rule_name: Remark_Guest_to_Default
+              - vlan: 10
+                protocol: ANY
+                dscp: -1
+                qos_rule_name: Trust_Data_VLAN
+              - vlan: 20
+                protocol: ANY
+                dscp: -1
+                qos_rule_name: Trust_Voice_VLAN
+              - vlan: 30
+                protocol: ANY
+                dscp: -1
+                qos_rule_name: Trust_IoT_VLAN
+              - vlan: 40
+                protocol: ANY
+                dscp: -1
+                qos_rule_name: Trust_PCI_VLAN
+            storm_control:
+                broadcast_threshold: 20
+                multicast_threshold: 30
+                unknown_unicast_threshold: 10

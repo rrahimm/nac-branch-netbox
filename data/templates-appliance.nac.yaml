@@ -1,0 +1,244 @@
+
+meraki:
+  templates:
+    networks:
+      - name: app_settings
+        type: model
+        configuration:
+          appliance:
+                  settings:
+                    client_tracking_method: "MAC address"
+                    deployment_mode: routed
+                    dynamic_dns:
+                      prefix: "my-network"
+                      enabled: true
+      - name: app_spoke
+        type: file
+        file: data/spoke.yaml.tftpl
+      - name: app_ports
+        type: model
+        configuration:
+          appliance:
+            ports:
+              - port_id_ranges:
+                  - from: 5
+                    to: 6
+                  - from: 13
+                    to: 14
+                enabled: true
+                type: trunk
+                allowed_vlans: "1,10,20,30,40,50,999"
+                vlan: 1
+              - port_id_ranges:
+                  - from: 7
+                    to: 12
+                enabled: false             
+      - name: app_vlans
+        type: model
+        configuration:
+          appliance:
+                vlans:
+                  - vlan_id: 10
+                    name: "Data"
+                    subnet: ${vlan10_subnet}
+                    appliance_ip: ${vlan10_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dhcp_handling: "Run a DHCP server"
+                    # dhcp_handling: "Relay DHCP to another server"
+                    # dhcp_relay_server_ips:
+                    #   - ${corp_dhcp_server1}
+                    #   - ${corp_dhcp_server2}
+                    mandatory_dhcp: false
+                  - vlan_id: 20
+                    name: "Voice"
+                    subnet: ${vlan20_subnet}
+                    appliance_ip: ${vlan20_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dhcp_handling: "Run a DHCP server"
+                    # dhcp_handling: "Relay DHCP to another server"
+                    # dhcp_relay_server_ips:
+                    #   - ${corp_dhcp_server1}
+                    #   - ${corp_dhcp_server2}
+                    mandatory_dhcp: false
+                  - vlan_id: 30
+                    name: "Iot"
+                    subnet: ${vlan30_subnet}
+                    appliance_ip: ${vlan30_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dhcp_handling: "Run a DHCP server"
+                    # dhcp_handling: "Relay DHCP to another server"
+                    # dhcp_relay_server_ips:
+                    #   - ${corp_dhcp_server1}
+                    #   - ${corp_dhcp_server2}
+                    mandatory_dhcp: false
+                  # Note:  VLAN 40 (PCI) added to Unified Branch Phase 2
+                  - vlan_id: 40
+                    name: "PCI"
+                    subnet: ${vlan40_subnet}
+                    appliance_ip: ${vlan40_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dhcp_handling: "Run a DHCP server"
+                    # dhcp_handling: "Relay DHCP to another server"
+                    # dhcp_relay_server_ips:
+                    #   - ${corp_dhcp_server1}
+                    #   - ${corp_dhcp_server2}
+                    mandatory_dhcp: false
+                  - vlan_id: 50
+                    name: "Guest"
+                    subnet: ${vlan50_subnet}
+                    appliance_ip: ${vlan50_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dns_nameservers: opendns
+                    dhcp_handling: "Run a DHCP server"
+                    dhcp_lease_time: "1 day"
+                    dhcp_boot_options: false
+                    mandatory_dhcp: true
+                  - vlan_id: 999
+                    name: "Infra"
+                    subnet: ${vlan999_subnet}
+                    appliance_ip: ${vlan999_appliance_ip}
+                    # ipv6:
+                    #   enabled: false
+                    dns_nameservers: "${dns_server_1}\n${dns_server_2}"
+                    dhcp_handling: "Run a DHCP server"
+                    dhcp_lease_time: "1 day"
+                    dhcp_boot_options: false
+                    mandatory_dhcp: false
+      - name: app_fw
+        type: model
+        configuration:
+            appliance:
+              firewall:
+                l3_firewall_rules:
+                    rules:
+                    - comment: "Local Print Access"
+                      policy: allow
+                      protocol: any
+                      source_cidr: "10.10.0.0/16"
+                      source_port: Any
+                      destination_cidr: "10.30.1.101/32,10.30.1.102/32"
+                      destination_port: Any
+                    - comment: "Default (VLAN 1) Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "192.168.128.0/24" 
+                      source_port: "Any"
+                      destination_cidr: "10.10.0.0/16,10.20.0.0/16,10.30.0.0/16,10.40.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "Data Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "10.10.0.0/16"
+                      source_port: "Any"
+                      destination_cidr: "192.168.128.0/24,10.20.0.0/16,10.30.0.0/16,10.40.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "Voice Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "10.20.0.0/16"
+                      source_port: "Any"
+                      destination_cidr: "192.168.128.0/24,10.10.0.0/16,10.30.0.0/16,10.40.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "IoT Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "10.30.0.0/16"
+                      source_port: "Any"
+                      destination_cidr: "192.168.128.0/24,10.10.0.0/16,10.20.0.0/16,10.40.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "PCI Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "10.40.0.0/16"
+                      source_port: "Any"
+                      destination_cidr: "192.168.128.0/24,10.10.0.0/16,10.20.0.0/16,10.30.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "Guest Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "172.16.99.0/24"
+                      source_port: "Any"
+                      destination_cidr: "10.10.0.0/16,10.20.0.0/16,10.30.0.0/16,10.40.0.0/16,10.250.0.0/16"
+                      destination_port: "Any"
+                    - comment: "Infra Access"
+                      policy: deny
+                      protocol: any
+                      source_cidr: "10.250.0.0/16"
+                      source_port: "Any"
+                      destination_cidr: "192.168.128.0/24,10.10.0.0/16,10.20.0.0/16,10.30.0.0/16,10.40.0.0/16,172.16.99.0/24"
+                      destination_port: "Any"
+                    - comment: "Allow DIA"
+                      policy: allow
+                      protocol: any
+                      source_cidr: "192.168.128.0/24,10.10.0.0/16,172.16.99.0/24,10.250.0.0/16"
+                      source_port: Any
+                      destination_cidr: Any
+                      destination_port: Any
+                    - comment: "Deny All"
+                      policy: deny
+                      protocol: any
+                      source_cidr: Any
+                      source_port: Any
+                      destination_cidr: Any
+                      destination_port: Any
+                firewalled_services:
+                    - service_name: "ICMP"
+                      access: "unrestricted"
+                    - service_name: "web"
+                      access: "blocked"
+                    - service_name: "SNMP"
+                      access: "blocked"
+      - name: app_content
+        type: model
+        configuration:
+          appliance:
+              content_filtering:
+                  allowed_url_patterns:
+                        - "www.cisco.com"
+                        - "*.meraki.com"
+                  blocked_url_patterns:
+                        - www.porn.com
+                        - www.socialmedia.net
+                        - www.example.badsitehere.com
+                  blocked_url_categories:
+                        - "meraki:contentFiltering/category/C6"
+                        - "meraki:contentFiltering/category/C69"
+                        - "meraki:contentFiltering/category/C55"
+                        - "meraki:contentFiltering/category/C47"
+                        - "meraki:contentFiltering/category/C84"
+                        - "meraki:contentFiltering/category/C22"
+                        - "meraki:contentFiltering/category/T01"
+                        - "meraki:contentFiltering/category/T03"
+                        - "meraki:contentFiltering/category/T14"
+                        - "meraki:contentFiltering/category/T05"
+                        - "meraki:contentFiltering/category/T02"
+                        - "meraki:contentFiltering/category/C36"
+                  url_category_list_size: fullList
+      - name: app_intrusion
+        type: model
+        configuration:
+          appliance:
+            security_intrusion:
+              mode: prevention
+              ids_rulesets: balanced
+      - name: app_mal
+        type: model
+        configuration:
+          appliance:
+            security_malware:
+                      mode: enabled
+                      allowed_urls:
+                        - url: "www.cisco.com"
+                          comment: "Cisco"
+                        - url: "*.meraki.com"
+                          comment: "Meraki"
+                      allowed_files:
+                        - sha256: "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+                          comment: "Test File 1"
+                        - sha256: "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+                          comment: "Test File 2"
