@@ -62,6 +62,9 @@ jobs:
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Generate merged configuration
         run: |
           echo "📦 Generating merged YAML data model for destroy context..."
@@ -141,6 +144,9 @@ jobs:
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
+
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
 
       - name: Download merged configuration
         uses: actions/download-artifact@v5

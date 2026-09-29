@@ -48,6 +48,9 @@ jobs:
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Mark workspace as safe for git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -117,6 +120,9 @@ jobs:
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
+
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
 
       - name: Download merged configuration
         uses: actions/download-artifact@v5
@@ -268,6 +274,9 @@ jobs:
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Download plan
         uses: actions/download-artifact@v5
         with:
@@ -332,6 +341,9 @@ jobs:
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Download merged configuration
         uses: actions/download-artifact@v5
         with:
@@ -391,6 +403,9 @@ jobs:
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
+
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
 
       - name: Download merged configuration
         uses: actions/download-artifact@v5
@@ -486,6 +501,9 @@ jobs:
 
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
+
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
 
       - name: Download Terraform state
         if: needs.deploy.result == 'failure'

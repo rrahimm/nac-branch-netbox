@@ -51,18 +51,18 @@ meraki:
                 dns_server_1: 8.8.8.8
                 dns_server_2: 8.8.4.4
                 address: Wake Forest, N.C.
-                vlan10_subnet: 10.1.10.0/24
-                vlan10_appliance_ip: 10.1.10.1
-                vlan20_subnet: 10.1.20.0/24
-                vlan20_appliance_ip: 10.1.20.1
-                vlan30_subnet: 10.1.30.0/24
-                vlan30_appliance_ip: 10.1.30.1
-                vlan40_subnet: 10.1.40.0/24
-                vlan40_appliance_ip: 10.1.40.1
-                vlan50_subnet: 10.1.50.0/24
-                vlan50_appliance_ip: 10.1.50.1
-                vlan999_subnet: 10.1.255.0/24
-                vlan999_appliance_ip: 10.1.255.1
+                vlan10_subnet: !env netbox__nac__unified_branch_1__10__prefix
+                vlan10_appliance_ip: !env netbox__nac__unified_branch_1__10__ipaddress
+                vlan20_subnet: !env netbox__nac__unified_branch_1__20__prefix
+                vlan20_appliance_ip: !env netbox__nac__unified_branch_1__20__ipaddress
+                vlan30_subnet: !env netbox__nac__unified_branch_1__30__prefix
+                vlan30_appliance_ip: !env netbox__nac__unified_branch_1__30__ipaddress
+                vlan40_subnet: !env netbox__nac__unified_branch_1__40__prefix
+                vlan40_appliance_ip: !env netbox__nac__unified_branch_1__40__ipaddress
+                vlan50_subnet: !env netbox__nac__unified_branch_1__50__prefix
+                vlan50_appliance_ip: !env netbox__nac__unified_branch_1__50__ipaddress
+                vlan999_subnet: !env netbox__nac__unified_branch_1__999__prefix
+                vlan999_appliance_ip: !env netbox__nac__unified_branch_1__999__ipaddress
                 hubs:
                   - name: !env vpn_hub_network_name
                     default_route: true
@@ -159,18 +159,18 @@ meraki:
                 dns_server_1: 8.8.8.8
                 dns_server_2: 8.8.4.4
                 address: Wake Forest, N.C.
-                vlan10_subnet: 10.2.10.0/24
-                vlan10_appliance_ip: 10.2.10.1
-                vlan20_subnet: 10.2.20.0/24
-                vlan20_appliance_ip: 10.2.20.1
-                vlan30_subnet: 10.2.30.0/24
-                vlan30_appliance_ip: 10.2.30.1
-                vlan40_subnet: 10.2.40.0/24
-                vlan40_appliance_ip: 10.2.40.1
-                vlan50_subnet: 10.2.50.0/24
-                vlan50_appliance_ip: 10.2.50.1
-                vlan999_subnet: 10.2.255.0/24
-                vlan999_appliance_ip: 10.2.255.1
+                vlan10_subnet: !env netbox__nac__unified_branch_2__10__prefix
+                vlan10_appliance_ip: !env netbox__nac__unified_branch_2__10__ipaddress
+                vlan20_subnet: !env netbox__nac__unified_branch_2__20__prefix
+                vlan20_appliance_ip: !env netbox__nac__unified_branch_2__20__ipaddress
+                vlan30_subnet: !env netbox__nac__unified_branch_2__30__prefix
+                vlan30_appliance_ip: !env netbox__nac__unified_branch_2__30__ipaddress
+                vlan40_subnet: !env netbox__nac__unified_branch_2__40__prefix
+                vlan40_appliance_ip: !env netbox__nac__unified_branch_2__40__ipaddress
+                vlan50_subnet: !env netbox__nac__unified_branch_2__50__prefix
+                vlan50_appliance_ip: !env netbox__nac__unified_branch_2__50__ipaddress
+                vlan999_subnet: !env netbox__nac__unified_branch_2__999__prefix
+                vlan999_appliance_ip: !env netbox__nac__unified_branch_2__999__ipaddress
                 hubs:
                   - name: !env vpn_hub_network_name
                     default_route: true

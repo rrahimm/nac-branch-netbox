@@ -135,6 +135,9 @@ jobs:
       - name: Load shared env vars
         run: grep -v '^\s*#' .env | grep -v '^\s*$' >> "$GITHUB_ENV"
 
+      - name: Load NetBox env vars
+        run: grep -v '^\s*#' .env.netbox | grep -v '^\s*$' | sed 's/^export //' >> "$GITHUB_ENV"
+
       - name: Mark repository as safe for git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
