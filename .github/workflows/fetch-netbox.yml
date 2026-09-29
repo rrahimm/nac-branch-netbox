@@ -1,0 +1,61 @@
+###############################################################################
+# GitHub Actions Workflow – Fetch NetBox Environment
+#
+# Usage:
+#   1. Trigger manually via "Run workflow" in the Actions tab whenever NetBox
+#      prefix/gateway data changes, or new netbox__* vars are referenced in
+#      data/*.nac.yaml.
+#   2. Regenerates .env.netbox and commits it straight to the target branch
+#      so the change is tracked in git history.
+#   3. All other workflows assume .env.netbox is already up to date in the
+#      repo and do not re-fetch it themselves.
+###############################################################################
+
+name: Fetch NetBox Environment
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: fetch-netbox
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # needed to commit .env.netbox back to the repo
+
+jobs:
+  fetch-netbox:
+    name: Fetch NetBox Environment
+    runs-on: ubuntu-latest
+    container:
+      image: danischm/nac:0.1.6
+      options: --user root
+    timeout-minutes: 15
+    environment: unified-branch-network-as-code
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Mark workspace as safe for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Fetch NetBox environment
+        env:
+          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
+        run: |
+          pip install -q requests
+          python3 scripts/fetch_netbox_env.py
+
+      - name: Commit .env.netbox
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .env.netbox
+          if git diff --cached --quiet; then
+            echo "✅ .env.netbox unchanged – nothing to commit."
+          else
+            git commit -m "ci: refresh .env.netbox from NetBox [skip ci]"
+            git push
+            echo "✅ .env.netbox updated and pushed."
+          fi
