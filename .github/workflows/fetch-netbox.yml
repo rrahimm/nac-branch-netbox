@@ -41,7 +41,7 @@ jobs:
 
       - name: Fetch NetBox environment
         env:
-          NETBOX_URL: ${{ secrets.NETBOX_URL }}
+          NETBOX_URL: ${{ vars.NETBOX_URL }}
           NETBOX_TOKEN: ${{ secrets.NETBOX_TOKEN }}
         run: |
           pip install -q requests
